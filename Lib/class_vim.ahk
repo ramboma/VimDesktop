@@ -48,10 +48,31 @@ Class_vim()
 	__v.LoadPlugin("Internal")
 	return v
 }
+
+GetLastAction()
+{
+  global __vimLastAction
+  return __vimLastAction
+}
+
 ShowInfo()
 {
 	Global vim
-	Tooltip % vim.GetMore()
+  obj := vim.GetMore(true)
+	winObj  := vim.GetWin(vim.LastFoundWin)
+  if winObj.Count
+      np .= winObj.Count
+  Loop, % obj.MaxIndex()
+  {
+     act := vim.GetAction(obj[A_Index]["Action"])
+     np .= obj[A_Index]["key"] "`t" act.Comment "`n"
+     If (A_Index = 1)
+        np .= "=====================`n" 
+  }
+  MouseGetPos, posx, posy, A
+  posx += 60
+  posy += 60
+	Tooltip, %np%, %posx%, %posy%
 }
 HideInfo()
 {
@@ -75,6 +96,7 @@ Class __vim
 				tihs.ActionFromPluginName := ""
 				this.LastFoundWin := ""
 		}
+		
 		; LoadPlugin(PluginName) {{{2
 		; 用于注册插件
 		LoadPlugin(PluginName)
@@ -88,7 +110,7 @@ Class __vim
 			p.CheckSub()
 			If p.Error
 			{
-				msgbox load plugin error
+				msgbox load plugin "%PluginName%" error
 				this.ActionFromPluginName := back
 			}
 		}
@@ -260,6 +282,7 @@ Class __vim
           Else
           {
 					  msgbox % "map " keyname " to "  action  " error"
+            this.ErrorCode := "MAP_ACTION_ERROR"
 					  return
           }
 			}
@@ -306,7 +329,11 @@ Class __vim
 				this.Debug.Add("Map: " thiskey " to: " Action)
 				Hotkey,%Key%,Vim_Key,On,UseErrorLevel
 				If ErrorLevel
+        {
 					Msgbox % KeyName "`n" key "`n映射错误"
+          this.ErrorCode := "MAP_KEY_ERROR"
+          return
+        }
 				Else
 				{
 					winObj.SuperKeyList[key] := super
@@ -316,6 +343,7 @@ Class __vim
 			}
 			modeObj.SetKeyMap(SavekeyName,Action)
 			modeObj.SetNoWait(SavekeyName,nowait)
+      return False
 		}
 		
 		; ExcludeWin(winName="",Bold=True) {{{2
@@ -329,6 +357,7 @@ Class __vim
 			winObj := this.GetWin(winName)
 			winObj.Status := !winObj.Status
 			this.Control(winObj.Status,winName)
+      return winObj.Status
 		}
  		; Control(bold,winName) {{{2
  		Control(bold,winName="",all=false)
@@ -406,20 +435,28 @@ Class __vim
 	
 		
 		; GetMore() {{{2
-		GetMore()
+		GetMore(obj=false)
 		{
+      rt_obj := []
 			winObj  := this.GetWin(this.LastFoundWin)
 			modeObj := this.GetMode(this.LastFoundWin)
       If Strlen(winObj.KeyTemp)
       {
 			  r := winObj.KeyTemp "`n"
+        rt_obj[1] := {"key":winObj.KeyTemp,"Action":modeObj.GetKeyMap(winObj.KeyTemp)}
 			  m := "i)^" this.ToMatch(winObj.KeyTemp) ".+"
 			  for i ,k in modeObj.keymapList
 			  {
 				  If RegExMatch(i,m)
+          {
 					  r .= i "`t" modeObj.GetKeyMap(i) "`n" 
+            rt_obj[rt_obj.MaxIndex()+1] := {"key":i,"Action":modeObj.GetKeyMap(i)}
+          }
 			  }
-			  return r
+        if obj 
+            return rt_obj
+        else
+			      return r
       }
       Else
         If winobj.count
@@ -435,6 +472,7 @@ Class __vim
 		; Key() {{{2
 		Key()
 		{
+      Global __vimLastAction
 			; 获取winName
 			winName := this.CheckWin()
 			; 获取当前的热键
@@ -479,8 +517,9 @@ Class __vim
 			; 判断是否有更多热键,如果当前具有<nowait>设置，则无视更多热键
 			If modeObj.GetMoreKey(winObj.KeyTemp) And (Not modeObj.GetNoWait(winObj.KeyTemp)) {
 				; 启用TimeOut
-				If tick := winObj.TimeOut
-					Settimer,Vim_TimeOut,%tick%
+        If strlen(modeObj.GetKeymap(winObj.KeyTemp))
+				    If tick := winObj.TimeOut
+					      Settimer,Vim_TimeOut,%tick%
 				winObj.ShowMore()
 				; 执行在判断热键后的函数,如果函数返回True，按普通键输出
 				If IsFunc(f:=winObj.AfterActionDoFunc){
@@ -506,15 +545,19 @@ Class __vim
 				Else {
 					; 非数字则直接运行
 			    ;this.Debug.Add("act: " actionName "`tLK: " winObj.KeyTemp)
+          __vimLastAction := {"LastKey":k,"winName":winName,"ActionName":ActionName,"KeyTemp":winObj.KeyTemp,"Count":winObj.Count}
+		      Settimer,Vim_TimeOut,Off
 					actObj.Do(winObj.Count)
 					winObj.Count := 0
 				}
 			}
 			Else {
+		    Settimer,Vim_TimeOut,Off
 				; 如果没有，按普通键输出
 				If strlen(actionName := modeObj.GetKeymap(winObj.LastKey))
 				{
 					actObj := this.GetAction(actionName)
+          __vimLastAction := {"LastKey":k,"winName":winName,"ActionName":ActionName,"KeyTemp":winObj.KeyTemp,"Count":winObj.Count}
 					actObj.Do(winObj.Count)
 					winObj.Count := 0
 				}
@@ -543,6 +586,7 @@ Class __vim
 			If act
 			{
 				winObj.HideMore()
+        __vimLastAction := {"LastKey":k,"winName":winName,"ActionName":ActionName,"KeyTemp":winObj.KeyTemp,"Count":winObj.Count}
 				act.Do(winObj.Count)
 				winObj.Count := 0
 				winObj.KeyTemp := ""
@@ -723,7 +767,6 @@ Class __vim
 			v := RegExReplace(v ,"\+|\?|\.|\*|\{|\}|\(|\)|\||\^|\$|\[|\]|\\","\$0")
    		Return RegExReplace(v ,"\s","\s")
 		}
-		
 }
 ; Class __win {{{1
 Class __win 
@@ -902,33 +945,24 @@ Class __Action
 			If this.Type = 0
 			{
 				If IsLabel(l:=this.Name)
-        {
 					GoSub,%l%
-					return True
-        }
 			}
 			If this.Type = 1
 			{
 				If IsFunc(f:=this.Function)
-        {
 					%f%()
-					return True
-        }
 			}
 			If this.Type = 2
 			{
 				c := this.CmdLine
 				Run,%cmd%
-        return True
 			}
 			If This.Type = 3
 			{
 				t := this.HotString
 				Send,%t%
-        return True
 			}
 		}
-		return False
 	}
 }
 

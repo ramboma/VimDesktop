@@ -1,0 +1,101 @@
+﻿WizNote:
+global WizNotepath:="z:\Total\TOOLS\WizNote\Wiz.exe"
+;定义ahk_class为WizNoteMainFrame的程序insert模式，其中WizNoteMainFrame为刚刚获取到的Wiz的ahk_class
+              vim.mode("insert","WizNoteMainFrame")
+			  ;定义insert模式下如何返回normal模式，此处为按ESC返回，
+			  ;<Normal_Mode_WizNoteMainFrame>为一个标签，用于标示出它是Normal模式，在下方我们会用到此值
+              vim.map("<esc>","<Normal_Mode_WizNoteMainFrame>","WizNoteMainFrame")
+			  ;定义Normal模式
+              vim.mode("normal","WizNoteMainFrame")
+			  ;定义如何进入到插入模式，此处为按i,
+			  ;<Insert_Mode_SE_AxControl>同上方的<Normal_Mode_SE_AxControl>类似，也是一个标签，用于标示出它是insert模式，在下方我们会用到此值
+              vim.map("i","<Insert_Mode_WizNoteMainFrame>","WizNoteMainFrame")
+              vim.map("zw","<Wiz_新建文件>","WizNoteMainFrame")
+              vim.map("zb","<Wiz_新建便签>","WizNoteMainFrame")
+			   vim.map("zx","<Wiz_日历>","WizNoteMainFrame")
+			   vim.map("za","<Wiz_任务>","WizNoteMainFrame")
+			   vim.map("zz","<Wiz_复制或移动笔记>","WizNoteMainFrame")
+              vim.map("zm","<Wiz_全屏>","WizNoteMainFrame")
+			   vim.map("x","<Wiz_删除>","WizNoteMainFrame")
+			   vim.map("<lwin>x","<TogglWizNote>")
+			  ;定义注释
+             vim.Comment("<Wiz_新建文件>","Wiz_新建文件")
+			   vim.Comment("<Wiz_新建便签>","Wiz_新建便签")
+			   vim.Comment("<Wiz_日历>","Wiz_日历")
+             vim.Comment("<Wiz_删除>","Wiz_删除")
+           	 vim.Comment("<Wiz_复制或移动笔记>","复制或移动笔记")
+			  vim.Comment("<Wiz_任务>","Wiz_任务")
+             vim.Comment("<Wiz_全屏>","Wiz_全屏") 
+			 return
+;================检查模式,用于检查焦点Edit1这个控件内激活insert模式,而不用normal模式
+;模式检查，此段代码可以直接复制，但请修改ahk_class的值			  
+WizNote_CheckMode()
+{
+    ControlGetFocus,ctrl,AHK_CLASS WizNoteMainFrame
+    If RegExMatch(ctrl,"Edit1")
+        Return True
+    return False
+}
+<Normal_Mode_WizNoteMainFrame>:
+    Send,{Esc}
+    vim.Mode("normal","WizNoteMainFrame")
+return
+<Insert_Mode_WizNoteMainFrame>:
+    vim.Mode("insert","WizNoteMainFrame")
+return
+<mode_window_WizNoteMainFrame>:
+    vim.mode("window","WizNoteMainFrame")
+;Wiz_新建文件
+<Wiz_新建文件>:
+{
+	send,^n
+		return
+}
+;<Wiz_新建便签>
+<Wiz_新建便签>:
+{
+send,^!d
+return
+}
+;<Wiz_日历>
+<Wiz_日历>:
+{
+send,{F10}
+send,t
+send,c
+return
+}
+;<Wiz_删除>
+<Wiz_删除>:
+{
+send,{Del}
+return
+}
+;<Wiz_任务>
+<Wiz_任务>:
+{
+send,^!y
+return
+}
+;<Wiz_复制或移动笔记>
+<Wiz_复制或移动笔记>:
+{
+send,^m
+return
+}
+;<Wiz_全屏>
+<Wiz_全屏>:
+{
+send,{F11}
+return
+}
+<ToggleWizNote>:
+DetectHiddenWindows, on
+IfWinNotExist ahk_class WizNoteMainFrame
+Run %WizNotepath%
+Else
+IfWinNotActive ahk_class WizNoteMainFrame
+WinActivate
+Else
+WinMinimize
+Return

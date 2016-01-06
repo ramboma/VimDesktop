@@ -1,7 +1,3 @@
-# 项目主页迁移到:
-
-# [http://git.oschina.net/linxinhong/VimDesktop](http://git.oschina.net/linxinhong/VimDesktop)
-
 # VimDesktop是什么？
 
 VimDesktop 是一套基于AHK编辑的热键管理框架
@@ -43,4 +39,3 @@ VimDesktop支持插件化，现在初步支持
 # 其它
 + 如果有问题可以发送邮件给我[StarRed](mailto:234653915@qq.com)
 + 或者加入群一起讨论 271105729
-+ 如果可以，请捐赠支持lin.xh@live.cn(支付宝)

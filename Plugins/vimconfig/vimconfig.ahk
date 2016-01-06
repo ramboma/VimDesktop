@@ -93,7 +93,7 @@ vimconfig_LoadActions:
 	GUI,vimconfig_keymap:Add,ListBox ,x20 y316  w180 R5 center gvimconfig_keymap_loadhotkey
 
 	GUI,vimconfig_keymap:Add,GroupBox,x225 y10 w420 h420,热键定义(&V)
-	GUI,vimconfig_keymap:Add,Listview,x235 y36 w400 h380 grid,热键|动作|描述
+	GUI,vimconfig_keymap:Add,Listview,x235 y36 w630 h380 grid,热键|动作|描述
 /*
 	GUI,vimconfig_keymap:Add,Text,x235 y309 ,过滤(&F)
 	GUI,vimconfig_keymap:Add,Edit,x290 y307 w160 r1
@@ -114,9 +114,9 @@ vimconfig_LoadActions:
 	GUI,vimconfig_keymap:Menu,vimconfig_keymap_menu
 */
 
-	LV_ModifyCol(1,"left 170")
-	LV_ModifyCol(2,"center 180")
-	LV_ModifyCol(3,"left 200")
+	LV_ModifyCol(1,"left 100")
+	LV_ModifyCol(2,"left 250")
+	LV_ModifyCol(3,"left 250")
 
 	vimconfig_keymap_loadwinlist()
 	vimconfig_keymap_loadhotkey(vimconfig_keymap_loadmodelist(thiswin))

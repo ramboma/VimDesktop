@@ -9,6 +9,16 @@
 - [x] 4. 迁移Everything插件
 
 ## 历史记录
+* 2015-02-11 13:31:04
+
+> 修改TC插件里的\<TC_GotoDesktop\>的执行方式，防止误操作。
+
+* 2015-02-09 18:03:12
+
+> ++ TC插件，增加\<TC_CopyNameNoExt\>复制不含后缀的文件名到剪切板中
+
+> ** 修复只能执行一次动作的Bug
+
 * 2015-02-09 13:31:45
 
 > ++ 增加[vim.SetModeFunction()](https://github.com/linxinhong/VimDesktop/wiki/API#setmodefunctionfuncmodenamewinname)
