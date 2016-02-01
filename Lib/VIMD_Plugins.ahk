@@ -5,6 +5,8 @@
 #include *i %A_ScriptDir%\plugins\WizNote\WizNote.ahk
 #include *i %A_ScriptDir%\plugins\OneNote\OneNote.ahk
 #include *i %A_ScriptDir%\plugins\EditPlus\EditPlus.ahk
+#include *i %A_ScriptDir%\plugins\EmEditor\EmEditor.ahk
+#include *i %A_ScriptDir%\plugins\Foxmail\Foxmail.ahk
 /*
 [ExtensionsTime]
 everything=20150213100911

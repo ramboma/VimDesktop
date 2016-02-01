@@ -23,12 +23,16 @@ vim.map("<Esc>","<EditPlus_NormalMode>","EditPlus")
 vim.SetMode("Normal","EditPlus")
 ; 映射热键
 ; <0>~<9>是内置的Label，可以看一下class_vim.ahk
+;移动
 vim.map("j","<EditPlus_Down>","EditPlus")
 vim.map("k","<EditPlus_Up>","EditPlus")
 vim.map("h","<left>","EditPlus")
 vim.map("l","<right>","EditPlus")
 vim.map("w","<EditPlus_word>","EditPlus")
 vim.map("b","<EditPlus_back>","EditPlus")
+vim.map("gg","<EditPlus_goBegin>","EditPlus")
+vim.map("G","<EditPlus_goEnd>","EditPlus")
+
 vim.map("o","<EditPlus_OneLine>","EditPlus")
 vim.map("O","<EditPlus_upLine>","EditPlus")
 vim.map("p","<EditPlus_paste>","EditPlus")
@@ -94,6 +98,12 @@ return
 return
 <EditPlus_Down>:
     sendplay,{Down}
+return
+<EditPlus_goBegin>:
+    sendplay,^{Home}
+return
+<EditPlus_goEnd>:
+    sendplay,^{End}
 return
 <EditPlus_linecopy>:
     send,{home}
