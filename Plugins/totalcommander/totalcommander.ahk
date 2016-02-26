@@ -215,6 +215,8 @@
 	vim.map("zv","<cm_VerticalPanels>","TTOTAL_CMD")
 	vim.map("zv","<cm_VerticalPanels>","TTOTAL_CMD")
 	vim.map("z","<down>","TTOTAL_CMD")
+	vim.map("zx","<cm_FtpConnect>","TTOTAL_CMD")
+
   vim.BeforeActionDo("TC_BeforeActionDo","TTOTAL_CMD")
 /*
 	;vim.map("zs","<TransParent>","")

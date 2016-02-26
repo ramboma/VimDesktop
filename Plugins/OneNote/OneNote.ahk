@@ -25,6 +25,8 @@ vim.map("p","<OneNote_paste>","OneNote")
 vim.map("yy","<OneNote_linecopy>","OneNote")
 vim.map("u","<OneNote_undo>","OneNote")
 vim.map("r","<OneNote_redo>","OneNote")
+vim.map("gg","<OneNote_GoTop>","OneNote")
+vim.map("G","<OneNote_GoBottom>","OneNote")
 
 vim.map("x","<OneNote_DeleteOneChar>","OneNote")
 vim.map("d","<OneNote_Delete>","OneNote")
@@ -108,5 +110,11 @@ return
     send,{home}
     send,+{end}
     send,{delete}
+return
+<OneNote_GoTop>:
+    send,^{home}
+return
+<OneNote_GoBottom>:
+    send,^{end}
 return
 ;========================公共键位定义end============================================
