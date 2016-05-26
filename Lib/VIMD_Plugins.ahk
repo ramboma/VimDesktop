@@ -7,6 +7,7 @@
 #include *i %A_ScriptDir%\plugins\EditPlus\EditPlus.ahk
 #include *i %A_ScriptDir%\plugins\EmEditor\EmEditor.ahk
 #include *i %A_ScriptDir%\plugins\Foxmail\Foxmail.ahk
+#include *i %A_ScriptDir%\plugins\FoxitReader\FoxitReader.ahk
 /*
 [ExtensionsTime]
 everything=20150213100911
