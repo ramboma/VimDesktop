@@ -1,57 +1,71 @@
-﻿Everything:
-  If Not A_ISAdmin
-    Run, *RunAs %A_AhkPath% "%A_ScriptFullPath%"
-	vim.SetPlugin("Everything","Array","0.1","用于Everything")
-	vim.SetAction("ET_VimToggle","启用/禁止Everything vim热键")
-	vim.SetAction("ET_CopyFullPath","复制选中项的完整路径")
-	vim.SetAction("ET_CopyFullPath2","复制选中项的完整路径，含双引号")
-	vim.SetAction("ET_CopyDir","复制选中项所在目录名")
-	vim.SetAction("ET_CopyFileName","复制选中文件名")
-	vim.SetAction("ET_CopyFileNameNoExt","复制选中项的文件名（不含扩展）")
-	vim.SetWin("Everything","EVERYTHING")
-	vim.SetMode("normal","Everything")
-  vim.BeforeActionDo("Everything_Check","Everything")
-	vim.map("1","<1>","Everything")
-	vim.map("2","<2>","Everything")
-	vim.map("3","<3>","Everything")
-	vim.map("4","<4>","Everything")
-	vim.map("5","<5>","Everything")
-	vim.map("6","<6>","Everything")
-	vim.map("7","<7>","Everything")
-	vim.map("8","<8>","Everything")
-	vim.map("9","<9>","Everything")
-	vim.map("0","<0>","Everything")
-	vim.map("j","<down>","Everything")
-	vim.map("k","<up>","Everything")
-	vim.map("yy","ET_CopyFullPath","Everything")
-	vim.map("y'","ET_CopyFullPath2","Everything")
-	vim.map("<super><ctrl>","ET_VimToggle","Everything")
-	;Toggle := True
-  etconfig := GetVimdConfig().everything
-  Toggle := not etconfig.disabled
-	vim.control(Toggle,"Everything")
-return
+﻿everything:
 
-Everything_Check()
+class:="everything"
+filepath:="everything.exe"
+
+;========================公共键位begin============================================
+; 设置Win
+vim.SetWin("everything",class,filepath)
+
+; 切换到Inert模式，后续map的所有热键都是在Insert模式下
+vim.SetMode("Insert","everything")
+; 映射热键
+vim.map("<Esc>","<everything_NormalMode>","everything")
+; 切换到Normal模式，后续map的所有热键都是在Noraml模式下
+vim.SetMode("Normal","everything")
+; 映射热键
+vim.map("i","<everything_InsertMode>","everything")
+; <0>~<9>是内置的Label，可以看一下class_vim.ahk
+;移动
+
+vim.map("j","<everything_Down>","everything")
+vim.map("k","<everything_Up>","everything")
+
+vim.map("o","<everything_OpenPath>","everything")
+vim.map("yf","<everything_copyfile>","everything")
+vim.map("yp","<everything_copyallpath>","everything")
+
+vim.map("x","<everything_Delete>","everything")
+
+;========================公共键位end============================================
+; 注意，最后一次SetMode 为 "normal" 则当前为Noraml模式
+return
+everything_CheckMode()
 {
-  ControlGetFocus,ctrl,ahk_Class EVERYTHING
-  If ctrl = Edit1
-    return true
+    ControlGetFocus,ctrl,AHK_CLASS everything
+    If RegExMatch(ctrl,"everything")
+        Return True
+    return False
 }
+;========================公共键位定义begin============================================
+; 以下为热键对应的功能区
+; 切换为Insert 模式
+<everything_InsertMode>:
 
-ET_VimToggle:
-	Toggle := Toggle ? False : True
-	vim.control(Toggle,"Everything")
+    send,!{Home}
+  vim.SetMode("Insert","everything")
 return
 
-ET_CopyFullPath:
-  Clipboard := 
-  Clipwait
-  Winmenuselectitem,ahk_class EVERYTHING, 1&, 8&
-  Clipboard := Trim(Clipboard,"""")
+; 切换为Normal 模式
+<everything_NormalMode>:
+  vim.SetMode("Normal","everything")
 return
-ET_CopyFullPath2:
-  msgbox
-  Winmenuselectitem,ahk_class EVERYTHING, 1&, 8&
+;插入模式下的命令
+<everything_Up>:
+    sendplay,{Up}
 return
-
+<everything_Down>:
+    sendplay,{Down}
+return
+<everything_OpenPath>:
+    sendplay,^{Enter}
+return
+<everything_copyfile>:
+    sendplay,^c
+return
+<everything_copyallpath>:
+    send,^+c
+return
+<everything_Delete>:
+    send,{Delete}
+return

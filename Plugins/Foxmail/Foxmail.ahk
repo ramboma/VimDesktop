@@ -36,7 +36,7 @@ vim.map("w","<Foxmail_NewMail>","Foxmail")
 vim.map("gm","<Foxmail_GetMail>","Foxmail")
 vim.map("ga","<Foxmail_GetAllMail>","Foxmail")
 vim.map("rr","<Foxmail_ReplyMail>","Foxmail")
-vim.map("s","<Foxmail_SendMail>","Foxmail")
+vim.map("ss","<Foxmail_SendMail>","Foxmail")
 vim.map("ra","<Foxmail_ReplyAll>","Foxmail")
 vim.map("m","<Foxmail_Mark>","Foxmail")
 vim.map("n","<Foxmail_MarkNo>","Foxmail")
@@ -45,6 +45,8 @@ vim.map("p","<Foxmail_Spam>","Foxmail")
 vim.map("I","<Foxmail_InBox>","Foxmail")
 vim.map("S","<Foxmail_SendedBox>","Foxmail")
 vim.map("t","<Foxmail_TransMail>","Foxmail")
+vim.map("w","<Foxmail_word>","Foxmail")
+vim.map("b","<Foxmail_back>","Foxmail")
 
 vim.map("x","<Foxmail_DeleteMail>","Foxmail")
 
@@ -64,8 +66,9 @@ Foxmail_CheckMode()
 ; 以下为热键对应的功能区
 ; 切换为Insert 模式
 <Foxmail_InsertMode>:
-  gui,cancel
   vim.SetMode("Insert","Foxmail")
+  ;Gui, MyGui:Add, Text,, 插入模式
+  ;Gui, MyGui:Show
 return
 <Foxmail_PreInsertMode>:
     send,{Home}
@@ -73,7 +76,6 @@ return
 return
 ; 切换为Normal 模式
 <Foxmail_NormalMode>:
-  gui,cancel
   vim.SetMode("Normal","Foxmail")
 return
 ; 切换为Command 模式
@@ -153,5 +155,10 @@ return
 <Foxmail_GotoButtom>:
     send,{End}
 return
-
+<Foxmail_word>:
+    send,^{Right} 
+return
+<Foxmail_back>:
+    send,^{Left} 
+return
 ;========================公共键位定义end============================================
