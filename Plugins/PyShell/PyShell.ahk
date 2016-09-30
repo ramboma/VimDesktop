@@ -131,6 +131,7 @@ return
     sendplay,{Down}
 return
 <PyShell_linecopy>:
+    clipboard=
     send,{home}
     sleep,100
     send,+{end}
@@ -146,6 +147,9 @@ return
     }
     sleep,300
     send,^c
+    ;把clipboard中的文本取出来,去掉前面的>>> ,然后再拷贝回去
+    ClipWait
+    StringReplace, clipboard, clipboard, >>>%A_SPACE%,, All
     send,{right}
     ;winactivate,ahk_class Chrome_WidgetWin_1
 return
