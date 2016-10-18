@@ -2,7 +2,32 @@
 class:="Framework::CFrame"
 filepath:="ONENOTE.EXE"
 ;定义row变量，用来实现2yy,2dd操作
-onenote_row:=0
+global onenote_row:=0
+global push_row:=0
+global push_cmd:=""
+push_cmds(cmd)
+{
+
+    ;msgbox,push_st_onenote_row:%onenote_row%
+    ;msgbox,push_st_push_row:%push_row%
+    global onenote_row
+    global push_row:=onenote_row
+    global push_cmd:=cmd
+    ;msgbox,push_end_onenote_row:%onenote_row%
+    ;msgbox,push_end_push_row:%push_row%
+}
+pop_cmd()
+{
+    ;msgbox,pop_st_push_row:%push_row%
+    ;msgbox,pop_st_onenote_row:%onenote_row%
+    global onenote_row:=push_row
+    global push_row
+    global push_cmd
+
+    gosub,%push_cmd%
+    ;msgbox,pop_end_push_row:%push_row%
+    ;msgbox,pos_end_onenote_row:%onenote_row%
+}
 ;========================公共键位begin============================================
 ; 设置Win
 vim.SetWin("OneNote",class,filepath)
@@ -50,6 +75,8 @@ vim.map("6","<OneNote_Set6Rows>","OneNote")
 vim.map("7","<OneNote_Set7Rows>","OneNote")
 vim.map("8","<OneNote_Set8Rows>","OneNote")
 vim.map("9","<OneNote_Set9Rows>","OneNote")
+vim.map(".","<pop_cmd>","OneNote")
+
 ; 切换到Select模式，后续map的所有热键都是在Select模式下
 vim.SetMode("Select","OneNote")
 ; 映射热键
@@ -73,6 +100,7 @@ OneNote_CheckMode()
         Return True
     return False
 }
+
 ;========================公共键位定义begin============================================
 ; 以下为热键对应的功能区
 ; 切换为Insert 模式
@@ -105,6 +133,7 @@ return
   ;DllCall("SetSystemCursor",Uint,harrow,Int,OCR_IBEAM)
   vim.SetMode("Normal","OneNote")
   Tooltip, Normal模式, 0,0,19
+  ;init rows
   ;在title添加模式,结果无法对齐，背景也错误，取消
   ;WinGetTitle, Title,A
   ;winsettitle,%Title%,,%Title% Normal模式
@@ -129,10 +158,40 @@ return
     ;Tooltip, insert模式, 0,0,19
 return
 <OneNote_Up>:
-    sendplay,{Up}
+    ;sendplay,{Up}
+    if onenote_row>1
+    {
+        push_cmds("<OneNote_Up>")
+        loop,%onenote_row%
+        {
+            sendplay,{Up}
+        }
+        onenote_row:=0
+    }
+    else
+    {
+        
+        sendplay,{Up}
+    }
+return
+<pop_cmd>:
+     pop_cmd()
 return
 <OneNote_Down>:
-    sendplay,{Down}
+    if onenote_row>1
+    {
+        push_cmds("<OneNote_Down>")
+        loop,%onenote_row%
+        {
+            sendplay,{Down}
+        }
+        onenote_row:=0
+    }
+    else
+    {
+        
+        sendplay,{Down}
+    }
 return
 <OneNote_linecopy>:
     send,{home}
