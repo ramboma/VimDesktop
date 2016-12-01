@@ -145,6 +145,7 @@ return
     ;shift按下
     ;send {shift down};
   vim.SetMode("Select","OneNote")
+  Tooltip, V, 0,0,19
 return
 <OneNote_word>:
     send,^{Right} 
