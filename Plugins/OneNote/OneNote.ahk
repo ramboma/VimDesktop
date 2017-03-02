@@ -135,6 +135,9 @@ return
   ;DllCall("SetSystemCursor",Uint,harrow,Int,OCR_IBEAM)
   vim.SetMode("Normal","OneNote")
   Tooltip, N, 0,0,19
+  Bmp := DllCall("LoadImage","UInt",NULL,"Str","caret.bmp","UInt",0,"Int",0,"Int",0,"UInt",0x00000050)
+DllCall("CreateCaret","Int",A,"UInt",Bmp)
+DllCall("ShowCaret","Int",A)
   ;init rows
   ;在title添加模式,结果无法对齐，背景也错误，取消
   ;WinGetTitle, Title,A
