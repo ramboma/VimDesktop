@@ -329,6 +329,7 @@ return
 return
 ; <ToggleTC> {{{1
 <ToggleTC>:
+	
 	IfWinExist,AHK_CLASS TTOTAL_CMD
 	{
 		WinGet,AC,MinMax,AHK_CLASS TTOTAL_CMD
@@ -3593,4 +3594,15 @@ Return
 ;<cm_ContentStopLoadFields>: >>停止后台加载备注{{{2
 <cm_ContentStopLoadFields>:
 	SendPos(5514)
+Return
+
+;<switchToEnglishKeyboard>: >>切换到英文键盘,需要在设置高级快捷键
+<switchToEnglishKeyboard>:
+	send,^+0
+Return 
+;<switchToChineseKeyboard>: >>切换到中文键盘`
+<switchToChineseKeyboard>:
+	send,^+0
+	sleep,100
+	send,^{SPACE}
 Return

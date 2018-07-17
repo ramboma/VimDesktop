@@ -52,16 +52,16 @@ return
 return
 ;插入模式下的命令
 <everything_Up>:
-    sendplay,{Up}
+    send,{Up}
 return
 <everything_Down>:
-    sendplay,{Down}
+    send,{Down}
 return
 <everything_OpenPath>:
-    sendplay,^{Enter}
+    send,^{Enter}
 return
 <everything_copyfile>:
-    sendplay,^c
+    send,^c
 return
 <everything_copyallpath>:
     send,^+c

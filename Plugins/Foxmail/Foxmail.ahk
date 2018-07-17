@@ -92,7 +92,7 @@ return
     send,{up}
 return
 <Foxmail_Left>:
-    sendplay,{Left}
+    send,{Left}
 return
 <Foxmail_Right>:
     Send, {Right}

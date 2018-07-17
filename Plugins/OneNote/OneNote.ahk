@@ -164,20 +164,22 @@ return
     ;Tooltip, insert模式, 0,0,19
 return
 <OneNote_Up>:
-    ;sendplay,{Up}
+    ;send,{Up}
     if onenote_row>1
     {
+        ;outputdebug,%onenote_row
         push_cmds("<OneNote_Up>")
         loop,%onenote_row%
         {
-            sendplay,{Up}
+         
+            send,{Up}
         }
         onenote_row:=0
     }
     else
     {
         
-        sendplay,{Up}
+        send,{Up}
     }
 return
 <pop_cmd>:
@@ -189,14 +191,14 @@ return
         push_cmds("<OneNote_Down>")
         loop,%onenote_row%
         {
-            sendplay,{Down}
+            send,{Down}
         }
         onenote_row:=0
     }
     else
     {
         
-        sendplay,{Down}
+        send,{Down}
     }
 return
 <OneNote_linecopy>:
@@ -209,7 +211,7 @@ return
         onenote_row:=onenote_row-1
         loop,%onenote_row%
         {
-            sendplay,+{Down}
+            send,+{Down}
         }
         onenote_row:=0
     }
@@ -230,7 +232,7 @@ return
 <OneNote_upLine>:
     send,{home}
     send,{enter}
-    sendplay,{up}
+    send,{up}
 return
 <OneNote_LineAppend>:
     send,{end}
@@ -258,7 +260,7 @@ return
         onenote_row:=onenote_row-1
         loop,%onenote_row%
         {
-            sendplay,+{Down}
+            send,+{Down}
         }
         onenote_row:=0
     }
@@ -286,22 +288,22 @@ return
 ;====选择模式====
 <OneNote_SelectDown>:
     send {Shift down}
-    sendplay,{Down}
+    send,{Down}
     send {Shift up}
 return
 <OneNote_SelectUp>:
     send {Shift down}
-    sendplay,{Up}
+    send,{Up}
     send {Shift up}
 return
 <OneNote_SelectLeft>:
     send {Shift down}
-    sendplay,{Left}
+    send,{Left}
     send {Shift up}
 return
 <OneNote_selectRight>:
     send {Shift down}
-    sendplay,{Right}
+    send,{Right}
     send {Shift up}
 return
 <OneNote_SelectGoTop>:

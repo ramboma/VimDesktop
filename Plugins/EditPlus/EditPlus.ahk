@@ -94,16 +94,16 @@ return
     vim.SetMode("Insert","EditPlus")
 return
 <EditPlus_Up>:
-    sendplay,{Up}
+    send,{Up}
 return
 <EditPlus_Down>:
-    sendplay,{Down}
+    send,{Down}
 return
 <EditPlus_goBegin>:
-    sendplay,^{Home}
+    send,^{Home}
 return
 <EditPlus_goEnd>:
-    sendplay,^{End}
+    send,^{End}
 return
 <EditPlus_linecopy>:
     send,{home}
@@ -123,7 +123,7 @@ return
 <EditPlus_upLine>:
     send,{home}
     send,{enter}
-    sendplay,{up}
+    send,{up}
 return
 <EditPlus_LineAppend>:
     send,{end}
